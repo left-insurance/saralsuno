@@ -5,91 +5,110 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SaralSuno – Accessibility Assistant</title>
 
+  <!-- Optional: elegant serif font -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #f4f5fb;
-      --card: #ffffff;
-      --text: #111827;
-      --muted: #6b7280;
-      --accent: #7c3aed;
-      --accent2: #2563eb;
-      --border: #e2e8f0;
-      --shadow: rgba(15, 23, 42, 0.12);
-    }
-    body.dark {
-      --bg: #020617;
+      --bg: #0b1020;
+      --bg-soft: #111827;
       --card: #020617;
       --text: #e5e7eb;
       --muted: #9ca3af;
-      --accent: #a855f7;
-      --accent2: #22c55e;
+      --accent: #f4c15d;   /* gold */
+      --accent-soft: #f97316;
       --border: #1f2937;
-      --shadow: rgba(0,0,0,0.6);
+      --shadow: rgba(15, 23, 42, 0.8);
+    }
+    body.light {
+      --bg: #f9fafb;
+      --bg-soft: #e5e7eb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #b45309;
+      --accent-soft: #f59e0b;
+      --border: #e5e7eb;
+      --shadow: rgba(15, 23, 42, 0.12);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Poppins", sans-serif;
-      background: radial-gradient(circle at top, rgba(124,58,237,0.18), transparent 55%),
-                  radial-gradient(circle at bottom, rgba(37,99,235,0.22), transparent 55%),
-                  var(--bg);
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(244,193,93,0.16), transparent 55%),
+        radial-gradient(circle at bottom, rgba(15,23,42,0.85), transparent 60%),
+        var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: 5rem 1rem 2rem;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
+      padding: 1.5rem;
       transition: background 0.4s ease, color 0.3s ease;
     }
 
-    /* Floating navbar */
-    .nav {
-      position: fixed;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(960px, 100% - 1.5rem);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.6rem 1rem;
-      background: rgba(15,23,42,0.85);
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.4);
-      box-shadow: 0 12px 30px rgba(15,23,42,0.4);
-      backdrop-filter: blur(16px);
-      color: #e5e7eb;
-      z-index: 20;
-    }
-    .nav-title {
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-    .nav-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 0 12px rgba(129,140,248,0.8);
-    }
-    .nav-tagline {
-      font-size: 0.78rem;
-      opacity: 0.7;
+    .shell {
+      width: min(760px, 100%);
+      padding: 1px;
+      border-radius: 1.75rem;
+      background: linear-gradient(135deg, rgba(244,193,93,0.8), rgba(148,163,184,0.2));
+      box-shadow: 0 28px 60px var(--shadow);
     }
 
-    .toggle-wrapper {
+    .card {
+      background: var(--card);
+      border-radius: 1.7rem;
+      padding: 2rem 1.8rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(244,193,93,0.08), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(15,23,42,0.9), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 1.6rem;
+    }
+    .title {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: 2.15rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+    .subtitle {
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+
+    /* Theme switch */
+    .theme-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1.3rem;
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      font-size: 0.8rem;
-    }
-    .toggle-label {
-      opacity: 0.8;
+      font-size: 0.75rem;
+      color: var(--muted);
     }
     .switch {
       position: relative;
@@ -116,103 +135,80 @@
       content: "";
       height: 18px; width: 18px;
       left: 3px; bottom: 3px;
-      background-color: white;
+      background-color: #f9fafb;
       transition: .3s;
       border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(15,23,42,0.6);
     }
     input:checked + .slider {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
     }
     input:checked + .slider:before {
       transform: translateX(20px);
     }
 
-    .card {
-      width: min(960px, 100%);
-      background: rgba(255,255,255,0.96);
-      padding: 2rem 1.5rem 1.5rem;
-      border-radius: 1.5rem;
-      box-shadow: 0 22px 40px var(--shadow);
-      border: 1px solid rgba(148,163,184,0.35);
-      backdrop-filter: blur(20px);
-      transition: background 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
-    }
-    body.dark .card {
-      background: rgba(15,23,42,0.98);
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 1.8rem;
-    }
-    .header-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: 0.03em;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.35rem;
-    }
-    .header-sub {
-      font-size: 0.95rem;
+    /* Labels */
+    .section-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
       color: var(--muted);
+      margin-bottom: 0.35rem;
     }
 
     textarea, .output {
       width: 100%;
-      padding: 1.1rem 1rem;
-      border-radius: 1rem;
+      padding: 1rem 0.9rem;
+      border-radius: 1.1rem;
       border: 1px solid var(--border);
-      font-size: 0.98rem;
-      line-height: 1.6;
-      background: rgba(15,23,42,0.015);
+      background: rgba(15,23,42,0.2);
       color: var(--text);
+      font-size: 0.96rem;
+      line-height: 1.6;
       resize: vertical;
-      transition: border 0.25s ease, background 0.25s ease;
+      transition: border 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+    body.light textarea, body.light .output {
+      background: rgba(249,250,251,0.8);
     }
     textarea:focus, .output:focus {
       outline: none;
       border-color: var(--accent);
-      background: rgba(129,140,248,0.05);
+      box-shadow: 0 0 0 1px rgba(244,193,93,0.25);
     }
     .output {
-      min-height: 130px;
-      margin-top: 0.4rem;
+      min-height: 120px;
+      margin-top: 0.35rem;
     }
 
-    .section-label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 0.4rem;
-    }
-
-    .buttons {
+    /* Controls */
+    .row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.7rem;
       justify-content: center;
       margin: 1rem 0;
     }
 
     button {
-      padding: 0.7rem 1.5rem;
+      padding: 0.7rem 1.4rem;
       border-radius: 999px;
       border: none;
       cursor: pointer;
+      font-size: 0.88rem;
       font-weight: 600;
-      font-size: 0.9rem;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: white;
-      transition: transform 0.18s ease, box-shadow 0.25s ease;
-      box-shadow: 0 10px 18px rgba(129,140,248,0.35);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: radial-gradient(circle at top left, var(--accent), var(--accent-soft));
+      color: #020617;
+      box-shadow: 0 14px 30px rgba(15,23,42,0.6);
+      transition: transform 0.14s ease, box-shadow 0.2s ease, filter 0.2s ease;
       white-space: nowrap;
     }
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 14px 24px rgba(129,140,248,0.45);
+      filter: brightness(1.02);
+      box-shadow: 0 18px 38px rgba(15,23,42,0.75);
     }
     button.secondary {
       background: transparent;
@@ -221,86 +217,83 @@
       box-shadow: none;
     }
     button.secondary:hover {
-      box-shadow: 0 10px 18px var(--shadow);
+      box-shadow: 0 10px 22px rgba(15,23,42,0.7);
     }
 
     select {
-      padding: 0.75rem 1.1rem;
+      padding: 0.65rem 1rem;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(15,23,42,0.02);
+      background: rgba(15,23,42,0.15);
       color: var(--text);
-      font-size: 0.9rem;
+      font-size: 0.86rem;
       outline: none;
+    }
+    body.light select {
+      background: rgba(249,250,251,0.9);
     }
 
     footer {
       text-align: center;
-      margin-top: 1.4rem;
-      font-size: 0.85rem;
+      margin-top: 1.3rem;
+      font-size: 0.84rem;
       color: var(--muted);
     }
     footer b {
       color: var(--accent);
+      font-weight: 600;
     }
   </style>
 </head>
 
-<body>
-
-  <!-- Floating Nav -->
-  <nav class="nav">
-    <div>
-      <div class="nav-title">
-        <span class="nav-dot"></span>
-        <span>SaralSuno</span>
+<body class="dark">
+  <div class="shell">
+    <div class="card">
+      <div class="theme-toggle">
+        <span>Light</span>
+        <label class="switch">
+          <input type="checkbox" id="themeToggle" onclick="toggleTheme()">
+          <span class="slider"></span>
+        </label>
+        <span>Dark</span>
       </div>
-      <div class="nav-tagline">A tiny accessibility tool that actually helps.</div>
+
+      <div class="content">
+        <header class="header">
+          <div class="title">SaralSuno</div>
+          <div class="subtitle">A quiet little tool to read, translate and listen — built for accessibility.</div>
+        </header>
+
+        <section style="margin-bottom: 1.2rem;">
+          <div class="section-label">Original text</div>
+          <textarea id="inputText" placeholder="Paste your English text here..."></textarea>
+        </section>
+
+        <section class="row">
+          <button onclick="readInputText()">🔊 Speak Original</button>
+          <button onclick="readOutputText()">🔊 Speak Translation</button>
+          <button class="secondary" onclick="clearText()">🧹 Clear</button>
+        </section>
+
+        <section class="row" style="margin-top: 0.2rem;">
+          <button onclick="translateText()">🌐 Translate</button>
+          <select id="languageSelect">
+            <option value="hi">Hindi</option>
+            <option value="mr">Marathi</option>
+          </select>
+        </section>
+
+        <section style="margin-top: 1rem;">
+          <div class="section-label">Translation</div>
+          <div class="output" id="outputArea" tabindex="0"></div>
+        </section>
+
+        <footer>
+          Made with 💜 for accessibility · Free & Open · Built by <b>Anay Parameshwaran</b>
+        </footer>
+      </div>
     </div>
-    <div class="toggle-wrapper">
-      <span class="toggle-label">Light</span>
-      <label class="switch">
-        <input type="checkbox" id="themeToggle" onclick="toggleTheme()">
-        <span class="slider"></span>
-      </label>
-      <span class="toggle-label">Dark</span>
-    </div>
-  </nav>
-
-  <main class="card">
-    <header class="header">
-      <h1 class="header-title">Read. Translate. Listen.</h1>
-      <p class="header-sub">Paste text, translate it to Hindi/Marathi and hear it out loud — built for students & accessibility.</p>
-    </header>
-
-    <section>
-      <div class="section-label">Original text</div>
-      <textarea id="inputText" placeholder="Paste your text here..."></textarea>
-    </section>
-
-    <section class="buttons">
-      <button onclick="readInputText()">🔊 Speak Original</button>
-      <button onclick="readOutputText()">🔊 Speak Translation</button>
-      <button class="secondary" onclick="clearText()">🧹 Clear</button>
-    </section>
-
-    <section class="buttons">
-      <button onclick="translateText()">🌐 Translate</button>
-      <select id="languageSelect">
-        <option value="hi">Hindi</option>
-        <option value="mr">Marathi</option>
-      </select>
-    </section>
-
-    <section>
-      <div class="section-label">Translation</div>
-      <div class="output" id="outputArea" tabindex="0"></div>
-    </section>
-
-    <footer>
-      Made with 💜 for accessibility · Free & Open · Built by <b>Anay Parameshwaran</b>
-    </footer>
-  </main>
+  </div>
 
 <script>
   const synth = window.speechSynthesis;
@@ -315,7 +308,7 @@
   }
 
   function toggleTheme() {
-    document.body.classList.toggle("dark");
+    document.body.classList.toggle("light");
   }
 
   function getVoiceForLang(langCode) {
@@ -326,7 +319,6 @@
     return v || null;
   }
 
-  // Speak original (English)
   function readInputText() {
     const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter some text first.");
@@ -343,7 +335,6 @@
     synth.speak(utter);
   }
 
-  // Speak translation (Hindi / Marathi with fallback)
   function readOutputText() {
     const text = document.getElementById("outputArea").innerText;
     if (!text) return alert("No translated text yet.");
@@ -359,7 +350,6 @@
 
     let voice = getVoiceForLang(targetLang);
     if (!voice) {
-      // fallback to english but at least speak
       alert("Hindi/Marathi voice may not be installed. Using English voice as fallback.");
       voice = getVoiceForLang("en");
     }
@@ -389,7 +379,6 @@
         if (!translated && Array.isArray(data?.matches) && data.matches.length > 0) {
           translated = data.matches[0].translation;
         }
-
         if (translated) {
           document.getElementById("outputArea").innerText = translated;
         } else {
