@@ -82,7 +82,6 @@
       opacity: 0.7;
     }
 
-    /* Toggle switch */
     .toggle-wrapper {
       display: flex;
       align-items: center;
@@ -128,7 +127,6 @@
       transform: translateX(20px);
     }
 
-    /* Main card */
     .card {
       width: min(960px, 100%);
       background: rgba(255,255,255,0.96);
@@ -306,38 +304,77 @@
 
 <script>
   const synth = window.speechSynthesis;
+  let voices = [];
 
-  // THEME
+  function loadVoices() {
+    voices = synth.getVoices();
+  }
+  loadVoices();
+  if (typeof speechSynthesis !== "undefined") {
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
   function toggleTheme() {
     document.body.classList.toggle("dark");
   }
 
-  // TTS: Original
+  function getVoiceForLang(langCode) {
+    if (!voices || voices.length === 0) return null;
+    langCode = langCode.toLowerCase();
+    let v = voices.find(v => v.lang.toLowerCase().startsWith(langCode));
+    if (!v) v = voices.find(v => v.lang.toLowerCase().includes(langCode));
+    return v || null;
+  }
+
+  // Speak original (English)
   function readInputText() {
     const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter some text first.");
+
     const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 1;
+    utter.pitch = 1;
+    utter.lang = "en-IN";
+
+    const enVoice = getVoiceForLang("en");
+    if (enVoice) utter.voice = enVoice;
+
     synth.cancel();
     synth.speak(utter);
   }
 
-  // TTS: Translation
+  // Speak translation (Hindi / Marathi with fallback)
   function readOutputText() {
     const text = document.getElementById("outputArea").innerText;
     if (!text) return alert("No translated text yet.");
+
+    const targetLang = document.getElementById("languageSelect").value; // "hi" or "mr"
     const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 1;
+    utter.pitch = 1;
+
+    if (targetLang === "hi") utter.lang = "hi-IN";
+    else if (targetLang === "mr") utter.lang = "mr-IN";
+    else utter.lang = "en-IN";
+
+    let voice = getVoiceForLang(targetLang);
+    if (!voice) {
+      // fallback to english but at least speak
+      alert("Hindi/Marathi voice may not be installed. Using English voice as fallback.");
+      voice = getVoiceForLang("en");
+    }
+    if (voice) utter.voice = voice;
+
     synth.cancel();
     synth.speak(utter);
   }
 
-  // Clear
   function clearText() {
     document.getElementById("inputText").value = "";
     document.getElementById("outputArea").innerText = "";
     synth.cancel();
   }
 
-  // Translate using MyMemory, with better fallback
   function translateText() {
     const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter text first.");
@@ -348,10 +385,7 @@
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        // Try main field
         let translated = data?.responseData?.translatedText;
-
-        // If not there, try first match
         if (!translated && Array.isArray(data?.matches) && data.matches.length > 0) {
           translated = data.matches[0].translation;
         }
@@ -359,7 +393,7 @@
         if (translated) {
           document.getElementById("outputArea").innerText = translated;
         } else {
-          document.getElementById("outputArea").innerText = "Translation failed. Please try a shorter sentence or later.";
+          document.getElementById("outputArea").innerText = "Translation failed. Please try again.";
         }
       })
       .catch(err => {
