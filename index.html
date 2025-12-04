@@ -8,74 +8,66 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --bg: #6a11cb;
-      --bg2: #2575fc;
-      --card: #ffffff;
-      --text: #1f2937;
-      --border: #e5e7eb;
-      --muted: #6b7280;
-      --button: linear-gradient(135deg, #6a11cb, #2575fc);
-    }
-    body.dark {
-      --bg: #0f172a;
-      --bg2: #1e293b;
-      --card: #1e293b;
-      --text: #f3f4f6;
-      --border: #334155;
-      --muted: #94a3b8;
-      --button: linear-gradient(135deg, #4c1d95, #1d4ed8);
-    }
-
     body {
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, var(--bg), var(--bg2));
+      font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 2rem;
-      color: var(--text);
-      transition: background 0.4s ease, color 0.3s ease;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+      color: #222;
+      transition: background 0.5s ease, color 0.3s ease;
+    }
+
+    body.dark {
+      background: linear-gradient(135deg, #020617, #111827);
+      color: #e5e7eb;
     }
 
     .container {
       width: 100%;
-      max-width: 760px;
-      background: var(--card);
-      padding: 2rem 1.8rem 2rem;
-      border-radius: 1.2rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+      max-width: 780px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 2rem 1.8rem 1.6rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(12px);
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    body.dark .container {
+      background: rgba(15, 23, 42, 0.96);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8);
     }
 
     h1 {
       text-align: center;
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin-bottom: 0.35rem;
+      font-size: 2.1rem;
+      margin-bottom: 0.5rem;
     }
 
     p.subtitle {
       text-align: center;
       margin-bottom: 1.6rem;
       font-size: 0.95rem;
-      color: var(--muted);
+      opacity: 0.8;
     }
 
-    /* DARK MODE SWITCH */
-    .switch-wrapper {
+    .top-row {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
 
+    /* SWITCH */
     .switch {
       position: relative;
       width: 50px;
       height: 26px;
     }
 
-    .switch input { 
+    .switch input {
       opacity: 0;
       width: 0;
       height: 0;
@@ -90,14 +82,14 @@
       transition: .3s;
     }
 
-    .slider::before {
+    .slider:before {
       position: absolute;
       content: "";
       height: 20px;
       width: 20px;
       left: 3px;
       bottom: 3px;
-      background: white;
+      background-color: #ffffff;
       border-radius: 50%;
       transition: .3s;
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -111,93 +103,112 @@
       transform: translateX(24px);
     }
 
-    /* INPUT + OUTPUT */
+    .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.7;
+      margin-bottom: 0.25rem;
+    }
+
     textarea, .output {
       width: 100%;
-      padding: 1rem;
+      padding: 1rem 0.9rem;
       border-radius: 1rem;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.6);
-      color: var(--text);
-      font-size: 1rem;
+      border: 1px solid rgba(148,163,184,0.6);
+      font-size: 0.96rem;
       margin-bottom: 1rem;
       resize: vertical;
+      line-height: 1.6;
+      background: rgba(248,250,252,0.9);
+      color: inherit;
+      transition: border 0.25s ease, background 0.25s ease;
     }
 
     body.dark textarea,
     body.dark .output {
-      background: rgba(30,41,59,0.8);
+      background: rgba(15,23,42,0.7);
+      border-color: rgba(75,85,99,0.9);
     }
 
-    .label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-bottom: 0.25rem;
-      color: var(--muted);
+    textarea:focus, .output:focus {
+      outline: none;
+      border-color: #6a11cb;
     }
 
     .output {
       min-height: 120px;
     }
 
-    /* BUTTONS */
     .buttons {
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
       gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: center;
       margin-bottom: 1rem;
     }
 
-    button {
-      padding: 0.75rem 1.5rem;
-      border-radius: 999px;
+    button.action {
+      padding: 0.7rem 1.5rem;
       border: none;
-      background: var(--button);
-      color: white;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: #fff;
       font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
-      transition: .2s ease;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.45);
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      white-space: nowrap;
     }
 
-    button:hover {
+    button.action:hover {
       transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(0,0,0,0.35);
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.55);
     }
 
     button.secondary {
       background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
+      color: inherit;
+      border: 1px solid rgba(148,163,184,0.8);
       box-shadow: none;
     }
 
+    button.secondary:hover {
+      box-shadow: 0 8px 18px rgba(15,23,42,0.4);
+    }
+
     select {
-      padding: 0.75rem 1.2rem;
+      padding: 0.7rem 1.1rem;
       border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.65);
-      color: var(--text);
+      border: 1px solid rgba(148,163,184,0.8);
+      background: rgba(248,250,252,0.9);
+      color: inherit;
       font-size: 0.9rem;
+      outline: none;
+    }
+
+    body.dark select {
+      background: rgba(15,23,42,0.7);
+      border-color: rgba(75,85,99,0.9);
     }
 
     footer {
       text-align: center;
       margin-top: 1.3rem;
-      font-size: 0.9rem;
-      opacity: 0.8;
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+
+    footer b {
+      font-weight: 600;
     }
   </style>
 </head>
 
 <body class="dark">
-
   <div class="container">
-
-    <!-- DARK MODE SWITCH -->
-    <div class="switch-wrapper">
+    <div class="top-row">
       <label class="switch">
         <input type="checkbox" id="themeToggle" onclick="toggleTheme()">
         <span class="slider"></span>
@@ -205,30 +216,36 @@
     </div>
 
     <h1>🌸 SaralSuno</h1>
-    <p class="subtitle">Translate • Listen • Understand — built for accessibility</p>
+    <p class="subtitle">
+      Paste text, translate to Hindi/Marathi, and listen — built for students & accessibility.
+    </p>
 
-    <div class="label">Original text</div>
-    <textarea id="inputText" placeholder="Paste your English text here..."></textarea>
-
-    <div class="buttons">
-      <button onclick="readInputText()">🔊 Speak Original</button>
-      <button onclick="readOutputText()">🔊 Speak Translation</button>
-      <button class="secondary" onclick="clearText()">🧹 Clear</button>
+    <div class="section">
+      <div class="label">Original text</div>
+      <textarea id="inputText" placeholder="Paste your English text here..."></textarea>
     </div>
 
     <div class="buttons">
-      <button onclick="translateText()">🌐 Translate</button>
+      <button class="action" onclick="readInputText()">🔊 Speak Original</button>
+      <button class="action" onclick="readOutputText()">🔊 Speak Translation</button>
+      <button class="action secondary" onclick="clearText()">🧹 Clear</button>
+    </div>
+
+    <div class="buttons">
+      <button class="action" onclick="translateText()">🌐 Translate</button>
       <select id="languageSelect">
         <option value="hi">Hindi</option>
         <option value="mr">Marathi</option>
       </select>
     </div>
 
-    <div class="label">Translation</div>
-    <div class="output" id="outputArea"></div>
+    <div class="section" style="margin-top: 0.6rem;">
+      <div class="label">Translation</div>
+      <div class="output" id="outputArea" tabindex="0"></div>
+    </div>
 
     <footer>
-      Made with 💜 for accessibility · Built by <b>Anay Parameshwaran</b>
+      Made with 💜 for accessibility · Free & Open · Built by <b>Anay Parameshwaran</b>
     </footer>
   </div>
 
@@ -236,77 +253,96 @@
   const synth = window.speechSynthesis;
   let voices = [];
 
-  function loadVoices() { voices = synth.getVoices(); }
+  function loadVoices() {
+    voices = synth.getVoices();
+  }
   loadVoices();
-  speechSynthesis.onvoiceschanged = loadVoices;
+  if (typeof speechSynthesis !== "undefined") {
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
 
   function toggleTheme() {
     document.body.classList.toggle("dark");
   }
 
-  function getVoice(langCode) {
-    if (!voices.length) return null;
+  function getVoiceForLang(langCode) {
+    if (!voices || voices.length === 0) return null;
     langCode = langCode.toLowerCase();
-    return voices.find(v => v.lang.toLowerCase().startsWith(langCode))
-        || voices.find(v => v.lang.toLowerCase().includes(langCode))
-        || null;
+    let v = voices.find(v => v.lang.toLowerCase().startsWith(langCode));
+    if (!v) v = voices.find(v => v.lang.toLowerCase().includes(langCode));
+    return v || null;
   }
 
   function readInputText() {
-    const text = inputText.value.trim();
+    const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter some text first.");
 
     const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 1;
+    utter.pitch = 1;
     utter.lang = "en-IN";
-    utter.voice = getVoice("en") || null;
+
+    const enVoice = getVoiceForLang("en");
+    if (enVoice) utter.voice = enVoice;
 
     synth.cancel();
     synth.speak(utter);
   }
 
   function readOutputText() {
-    const text = outputArea.innerText.trim();
-    if (!text) return alert("No translated text to speak.");
+    const text = document.getElementById("outputArea").innerText;
+    if (!text) return alert("No translated text yet.");
 
-    const lang = languageSelect.value;
+    const targetLang = document.getElementById("languageSelect").value; // "hi" or "mr"
     const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 1;
+    utter.pitch = 1;
 
-    if (lang === "hi") utter.lang = "hi-IN";
-    if (lang === "mr") utter.lang = "mr-IN";
+    if (targetLang === "hi") utter.lang = "hi-IN";
+    else if (targetLang === "mr") utter.lang = "mr-IN";
+    else utter.lang = "en-IN";
 
-    let voice = getVoice(lang);
+    let voice = getVoiceForLang(targetLang);
     if (!voice) {
-      alert("Device does not have Hindi/Marathi TTS installed. Using English fallback.");
-      voice = getVoice("en");
+      alert("Hindi/Marathi voice may not be installed. Using English voice as fallback.");
+      voice = getVoiceForLang("en");
     }
-    utter.voice = voice;
+    if (voice) utter.voice = voice;
 
     synth.cancel();
     synth.speak(utter);
   }
 
   function clearText() {
-    inputText.value = "";
-    outputArea.innerText = "";
+    document.getElementById("inputText").value = "";
+    document.getElementById("outputArea").innerText = "";
     synth.cancel();
   }
 
   function translateText() {
-    const text = inputText.value.trim();
+    const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter text first.");
 
-    const lang = languageSelect.value;
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${lang}`;
+    const targetLang = document.getElementById("languageSelect").value;
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`;
 
     fetch(url)
-      .then(r => r.json())
+      .then(res => res.json())
       .then(data => {
         let translated = data?.responseData?.translatedText;
-        if (!translated && data.matches?.length) translated = data.matches[0].translation;
-
-        outputArea.innerText = translated || "Translation failed.";
+        if (!translated && Array.isArray(data?.matches) && data.matches.length > 0) {
+          translated = data.matches[0].translation;
+        }
+        if (translated) {
+          document.getElementById("outputArea").innerText = translated;
+        } else {
+          document.getElementById("outputArea").innerText = "Translation failed. Please try again.";
+        }
       })
-      .catch(() => outputArea.innerText = "Error connecting to translation service.");
+      .catch(err => {
+        console.error(err);
+        document.getElementById("outputArea").innerText = "Error connecting to translation service.";
+      });
   }
 </script>
 
