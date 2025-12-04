@@ -5,390 +5,308 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SaralSuno – Accessibility Assistant</title>
 
-  <!-- Optional: elegant serif font -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
   <style>
-    :root {
-      --bg: #0b1020;
-      --bg-soft: #111827;
-      --card: #020617;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #f4c15d;   /* gold */
-      --accent-soft: #f97316;
-      --border: #1f2937;
-      --shadow: rgba(15, 23, 42, 0.8);
-    }
-    body.light {
-      --bg: #f9fafb;
-      --bg-soft: #e5e7eb;
-      --card: #ffffff;
-      --text: #111827;
-      --muted: #6b7280;
-      --accent: #b45309;
-      --accent-soft: #f59e0b;
-      --border: #e5e7eb;
-      --shadow: rgba(15, 23, 42, 0.12);
-    }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    :root {
+      --bg: #6a11cb;
+      --bg2: #2575fc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --border: #e5e7eb;
+      --muted: #6b7280;
+      --button: linear-gradient(135deg, #6a11cb, #2575fc);
+    }
+    body.dark {
+      --bg: #0f172a;
+      --bg2: #1e293b;
+      --card: #1e293b;
+      --text: #f3f4f6;
+      --border: #334155;
+      --muted: #94a3b8;
+      --button: linear-gradient(135deg, #4c1d95, #1d4ed8);
+    }
+
     body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(244,193,93,0.16), transparent 55%),
-        radial-gradient(circle at bottom, rgba(15,23,42,0.85), transparent 60%),
-        var(--bg);
-      color: var(--text);
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, var(--bg), var(--bg2));
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 1.5rem;
+      padding: 2rem;
+      color: var(--text);
       transition: background 0.4s ease, color 0.3s ease;
     }
 
-    .shell {
-      width: min(760px, 100%);
-      padding: 1px;
-      border-radius: 1.75rem;
-      background: linear-gradient(135deg, rgba(244,193,93,0.8), rgba(148,163,184,0.2));
-      box-shadow: 0 28px 60px var(--shadow);
-    }
-
-    .card {
+    .container {
+      width: 100%;
+      max-width: 760px;
       background: var(--card);
-      border-radius: 1.7rem;
-      padding: 2rem 1.8rem 1.5rem;
-      position: relative;
-      overflow: hidden;
+      padding: 2rem 1.8rem 2rem;
+      border-radius: 1.2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at top left, rgba(244,193,93,0.08), transparent 60%),
-        radial-gradient(circle at bottom right, rgba(15,23,42,0.9), transparent 55%);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Header */
-    .header {
+    h1 {
       text-align: center;
-      margin-bottom: 1.6rem;
-    }
-    .title {
-      font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: 2.15rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
+      font-size: 2.2rem;
+      font-weight: 700;
       margin-bottom: 0.35rem;
     }
-    .subtitle {
-      font-size: 0.93rem;
+
+    p.subtitle {
+      text-align: center;
+      margin-bottom: 1.6rem;
+      font-size: 0.95rem;
       color: var(--muted);
     }
 
-    /* Theme switch */
-    .theme-toggle {
-      position: absolute;
-      top: 1rem;
-      right: 1.3rem;
+    /* DARK MODE SWITCH */
+    .switch-wrapper {
       display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.75rem;
-      color: var(--muted);
+      justify-content: flex-end;
+      margin-bottom: 1rem;
     }
+
     .switch {
       position: relative;
-      display: inline-block;
-      width: 46px;
-      height: 24px;
+      width: 50px;
+      height: 26px;
     }
-    .switch input {
+
+    .switch input { 
       opacity: 0;
       width: 0;
       height: 0;
     }
+
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0; left: 0;
-      right: 0; bottom: 0;
-      background-color: #4b5563;
+      inset: 0;
+      background: #cbd5e1;
+      border-radius: 34px;
       transition: .3s;
-      border-radius: 999px;
     }
-    .slider:before {
+
+    .slider::before {
       position: absolute;
       content: "";
-      height: 18px; width: 18px;
-      left: 3px; bottom: 3px;
-      background-color: #f9fafb;
-      transition: .3s;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
       border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(15,23,42,0.6);
+      transition: .3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
+
     input:checked + .slider {
-      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+      background: #4c1d95;
     }
+
     input:checked + .slider:before {
-      transform: translateX(20px);
+      transform: translateX(24px);
     }
 
-    /* Labels */
-    .section-label {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--muted);
-      margin-bottom: 0.35rem;
-    }
-
+    /* INPUT + OUTPUT */
     textarea, .output {
       width: 100%;
-      padding: 1rem 0.9rem;
-      border-radius: 1.1rem;
+      padding: 1rem;
+      border-radius: 1rem;
       border: 1px solid var(--border);
-      background: rgba(15,23,42,0.2);
+      background: rgba(255,255,255,0.6);
       color: var(--text);
-      font-size: 0.96rem;
-      line-height: 1.6;
+      font-size: 1rem;
+      margin-bottom: 1rem;
       resize: vertical;
-      transition: border 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-    }
-    body.light textarea, body.light .output {
-      background: rgba(249,250,251,0.8);
-    }
-    textarea:focus, .output:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(244,193,93,0.25);
-    }
-    .output {
-      min-height: 120px;
-      margin-top: 0.35rem;
     }
 
-    /* Controls */
-    .row {
+    body.dark textarea,
+    body.dark .output {
+      background: rgba(30,41,59,0.8);
+    }
+
+    .label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+      color: var(--muted);
+    }
+
+    .output {
+      min-height: 120px;
+    }
+
+    /* BUTTONS */
+    .buttons {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
       justify-content: center;
-      margin: 1rem 0;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
     }
 
     button {
-      padding: 0.7rem 1.4rem;
+      padding: 0.75rem 1.5rem;
       border-radius: 999px;
       border: none;
-      cursor: pointer;
-      font-size: 0.88rem;
+      background: var(--button);
+      color: white;
       font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      background: radial-gradient(circle at top left, var(--accent), var(--accent-soft));
-      color: #020617;
-      box-shadow: 0 14px 30px rgba(15,23,42,0.6);
-      transition: transform 0.14s ease, box-shadow 0.2s ease, filter 0.2s ease;
-      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+      transition: .2s ease;
     }
+
     button:hover {
       transform: translateY(-2px);
-      filter: brightness(1.02);
-      box-shadow: 0 18px 38px rgba(15,23,42,0.75);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.35);
     }
+
     button.secondary {
       background: transparent;
-      color: var(--text);
       border: 1px solid var(--border);
+      color: var(--text);
       box-shadow: none;
-    }
-    button.secondary:hover {
-      box-shadow: 0 10px 22px rgba(15,23,42,0.7);
     }
 
     select {
-      padding: 0.65rem 1rem;
+      padding: 0.75rem 1.2rem;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(15,23,42,0.15);
+      background: rgba(255,255,255,0.65);
       color: var(--text);
-      font-size: 0.86rem;
-      outline: none;
-    }
-    body.light select {
-      background: rgba(249,250,251,0.9);
+      font-size: 0.9rem;
     }
 
     footer {
       text-align: center;
       margin-top: 1.3rem;
-      font-size: 0.84rem;
-      color: var(--muted);
-    }
-    footer b {
-      color: var(--accent);
-      font-weight: 600;
+      font-size: 0.9rem;
+      opacity: 0.8;
     }
   </style>
 </head>
 
 <body class="dark">
-  <div class="shell">
-    <div class="card">
-      <div class="theme-toggle">
-        <span>Light</span>
-        <label class="switch">
-          <input type="checkbox" id="themeToggle" onclick="toggleTheme()">
-          <span class="slider"></span>
-        </label>
-        <span>Dark</span>
-      </div>
 
-      <div class="content">
-        <header class="header">
-          <div class="title">SaralSuno</div>
-          <div class="subtitle">A quiet little tool to read, translate and listen — built for accessibility.</div>
-        </header>
+  <div class="container">
 
-        <section style="margin-bottom: 1.2rem;">
-          <div class="section-label">Original text</div>
-          <textarea id="inputText" placeholder="Paste your English text here..."></textarea>
-        </section>
-
-        <section class="row">
-          <button onclick="readInputText()">🔊 Speak Original</button>
-          <button onclick="readOutputText()">🔊 Speak Translation</button>
-          <button class="secondary" onclick="clearText()">🧹 Clear</button>
-        </section>
-
-        <section class="row" style="margin-top: 0.2rem;">
-          <button onclick="translateText()">🌐 Translate</button>
-          <select id="languageSelect">
-            <option value="hi">Hindi</option>
-            <option value="mr">Marathi</option>
-          </select>
-        </section>
-
-        <section style="margin-top: 1rem;">
-          <div class="section-label">Translation</div>
-          <div class="output" id="outputArea" tabindex="0"></div>
-        </section>
-
-        <footer>
-          Made with 💜 for accessibility · Free & Open · Built by <b>Anay Parameshwaran</b>
-        </footer>
-      </div>
+    <!-- DARK MODE SWITCH -->
+    <div class="switch-wrapper">
+      <label class="switch">
+        <input type="checkbox" id="themeToggle" onclick="toggleTheme()">
+        <span class="slider"></span>
+      </label>
     </div>
+
+    <h1>🌸 SaralSuno</h1>
+    <p class="subtitle">Translate • Listen • Understand — built for accessibility</p>
+
+    <div class="label">Original text</div>
+    <textarea id="inputText" placeholder="Paste your English text here..."></textarea>
+
+    <div class="buttons">
+      <button onclick="readInputText()">🔊 Speak Original</button>
+      <button onclick="readOutputText()">🔊 Speak Translation</button>
+      <button class="secondary" onclick="clearText()">🧹 Clear</button>
+    </div>
+
+    <div class="buttons">
+      <button onclick="translateText()">🌐 Translate</button>
+      <select id="languageSelect">
+        <option value="hi">Hindi</option>
+        <option value="mr">Marathi</option>
+      </select>
+    </div>
+
+    <div class="label">Translation</div>
+    <div class="output" id="outputArea"></div>
+
+    <footer>
+      Made with 💜 for accessibility · Built by <b>Anay Parameshwaran</b>
+    </footer>
   </div>
 
 <script>
   const synth = window.speechSynthesis;
   let voices = [];
 
-  function loadVoices() {
-    voices = synth.getVoices();
-  }
+  function loadVoices() { voices = synth.getVoices(); }
   loadVoices();
-  if (typeof speechSynthesis !== "undefined") {
-    speechSynthesis.onvoiceschanged = loadVoices;
-  }
+  speechSynthesis.onvoiceschanged = loadVoices;
 
   function toggleTheme() {
-    document.body.classList.toggle("light");
+    document.body.classList.toggle("dark");
   }
 
-  function getVoiceForLang(langCode) {
-    if (!voices || voices.length === 0) return null;
+  function getVoice(langCode) {
+    if (!voices.length) return null;
     langCode = langCode.toLowerCase();
-    let v = voices.find(v => v.lang.toLowerCase().startsWith(langCode));
-    if (!v) v = voices.find(v => v.lang.toLowerCase().includes(langCode));
-    return v || null;
+    return voices.find(v => v.lang.toLowerCase().startsWith(langCode))
+        || voices.find(v => v.lang.toLowerCase().includes(langCode))
+        || null;
   }
 
   function readInputText() {
-    const text = document.getElementById("inputText").value;
+    const text = inputText.value.trim();
     if (!text) return alert("Enter some text first.");
 
     const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 1;
-    utter.pitch = 1;
     utter.lang = "en-IN";
-
-    const enVoice = getVoiceForLang("en");
-    if (enVoice) utter.voice = enVoice;
+    utter.voice = getVoice("en") || null;
 
     synth.cancel();
     synth.speak(utter);
   }
 
   function readOutputText() {
-    const text = document.getElementById("outputArea").innerText;
-    if (!text) return alert("No translated text yet.");
+    const text = outputArea.innerText.trim();
+    if (!text) return alert("No translated text to speak.");
 
-    const targetLang = document.getElementById("languageSelect").value; // "hi" or "mr"
+    const lang = languageSelect.value;
     const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 1;
-    utter.pitch = 1;
 
-    if (targetLang === "hi") utter.lang = "hi-IN";
-    else if (targetLang === "mr") utter.lang = "mr-IN";
-    else utter.lang = "en-IN";
+    if (lang === "hi") utter.lang = "hi-IN";
+    if (lang === "mr") utter.lang = "mr-IN";
 
-    let voice = getVoiceForLang(targetLang);
+    let voice = getVoice(lang);
     if (!voice) {
-      alert("Hindi/Marathi voice may not be installed. Using English voice as fallback.");
-      voice = getVoiceForLang("en");
+      alert("Device does not have Hindi/Marathi TTS installed. Using English fallback.");
+      voice = getVoice("en");
     }
-    if (voice) utter.voice = voice;
+    utter.voice = voice;
 
     synth.cancel();
     synth.speak(utter);
   }
 
   function clearText() {
-    document.getElementById("inputText").value = "";
-    document.getElementById("outputArea").innerText = "";
+    inputText.value = "";
+    outputArea.innerText = "";
     synth.cancel();
   }
 
   function translateText() {
-    const text = document.getElementById("inputText").value;
+    const text = inputText.value.trim();
     if (!text) return alert("Enter text first.");
 
-    const targetLang = document.getElementById("languageSelect").value;
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`;
+    const lang = languageSelect.value;
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${lang}`;
 
     fetch(url)
-      .then(res => res.json())
+      .then(r => r.json())
       .then(data => {
         let translated = data?.responseData?.translatedText;
-        if (!translated && Array.isArray(data?.matches) && data.matches.length > 0) {
-          translated = data.matches[0].translation;
-        }
-        if (translated) {
-          document.getElementById("outputArea").innerText = translated;
-        } else {
-          document.getElementById("outputArea").innerText = "Translation failed. Please try again.";
-        }
+        if (!translated && data.matches?.length) translated = data.matches[0].translation;
+
+        outputArea.innerText = translated || "Translation failed.";
       })
-      .catch(err => {
-        console.error(err);
-        document.getElementById("outputArea").innerText = "Error connecting to translation service.";
-      });
+      .catch(() => outputArea.innerText = "Error connecting to translation service.");
   }
 </script>
 
