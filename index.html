@@ -131,8 +131,8 @@
     <textarea id="inputText" placeholder="Paste text here..."></textarea>
 
     <div class="buttons">
-      <button onclick="readText()">🔊 Read Aloud</button>
-      <button onclick="simplifyText()">✨ Simplify</button>
+      <button onclick="readInputText()">🔊 Read Input</button>
+      <button onclick="readOutputText()">🔊 Read Output</button>
       <button onclick="clearText()">🧹 Clear</button>
     </div>
 
@@ -152,28 +152,29 @@
 
     <section style="margin-top:2rem; text-align:center; font-size:0.9rem; color:#666;">
       <p><b>About SaralSuno</b></p>
-      <p>Built by <b>Anay Parameshwaran</b> as a free accessibility tool to help students and visually impaired users read and translate text easily.</p>
+      <p>Built by <b>Anay Parameshwaran</b> to help students, readers, and visually impaired users read and translate text easily.</p>
     </section>
   </div>
 
 <script>
   const synth = window.speechSynthesis;
 
-  function readText() {
+  function readInputText() {
     const text = document.getElementById("inputText").value;
-    if (!text) return alert("Enter text first.");
+    if (!text) return alert("Enter some text first.");
     const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 1;
+    utter.pitch = 1;
     synth.speak(utter);
   }
 
-  function simplifyText() {
-    let text = document.getElementById("inputText").value;
-    if (!text) return alert("Enter text first.");
-    text = text.replace(/\butilize\b/gi, "use")
-               .replace(/\bcommence\b/gi, "start")
-               .replace(/\bendeavor\b/gi, "try")
-               .replace(/\bapproximately\b/gi, "about");
-    document.getElementById("outputArea").innerText = text;
+  function readOutputText() {
+    const text = document.getElementById("outputArea").innerText;
+    if (!text) return alert("No translated text to read.");
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 1;
+    utter.pitch = 1;
+    synth.speak(utter);
   }
 
   function clearText() {
@@ -185,7 +186,7 @@
     document.body.classList.toggle("dark");
   }
 
-  // NEW WORKING TRANSLATION FUNCTION
+  // ⭐ NEW WORKING TRANSLATION FUNCTION
   function translateText() {
     const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter text first.");
