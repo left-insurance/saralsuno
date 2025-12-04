@@ -116,13 +116,18 @@
     body.dark button {
       background: linear-gradient(135deg, #ff6a00, #ee0979);
     }
+    body.dark select {
+      background: #333;
+      color: #eee;
+      border: 1px solid #555;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
     <h1>🌸 SaralSuno</h1>
-    <p>Your free AI-powered accessibility companion</p>
+    <p>Your free accessibility companion for reading and translation</p>
 
     <div class="buttons">
       <button onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
@@ -131,8 +136,8 @@
     <textarea id="inputText" placeholder="Paste text here..."></textarea>
 
     <div class="buttons">
-      <button onclick="readInputText()">🔊 Read Input</button>
-      <button onclick="readOutputText()">🔊 Read Output</button>
+      <button onclick="readInputText()">🔊 Speak Original</button>
+      <button onclick="readOutputText()">🔊 Speak Translation</button>
       <button onclick="clearText()">🧹 Clear</button>
     </div>
 
@@ -158,47 +163,84 @@
 
 <script>
   const synth = window.speechSynthesis;
+  let voices = [];
+
+  function loadVoices() {
+    voices = synth.getVoices();
+  }
+  loadVoices();
+  if (typeof speechSynthesis !== "undefined") {
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  function getVoiceForLang(langPrefix) {
+    if (!voices || voices.length === 0) return null;
+    langPrefix = langPrefix.toLowerCase();
+    // exact language match first, then partial
+    let v = voices.find(v => v.lang.toLowerCase().startsWith(langPrefix));
+    if (!v) v = voices.find(v => v.lang.toLowerCase().includes(langPrefix));
+    return v || null;
+  }
 
   function readInputText() {
     const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter some text first.");
+
     const utter = new SpeechSynthesisUtterance(text);
     utter.rate = 1;
     utter.pitch = 1;
+
+    // try English voice for input
+    const enVoice = getVoiceForLang("en");
+    if (enVoice) utter.voice = enVoice;
+
+    synth.cancel();
     synth.speak(utter);
   }
 
   function readOutputText() {
     const text = document.getElementById("outputArea").innerText;
     if (!text) return alert("No translated text to read.");
+
     const utter = new SpeechSynthesisUtterance(text);
     utter.rate = 1;
     utter.pitch = 1;
+
+    const targetLang = document.getElementById("languageSelect").value; // "hi" or "mr"
+    let voice = getVoiceForLang(targetLang);
+
+    if (!voice) {
+      alert("Your device may not have a Hindi/Marathi voice installed. Using English voice as fallback.");
+      voice = getVoiceForLang("en");
+    }
+
+    if (voice) utter.voice = voice;
+
+    synth.cancel();
     synth.speak(utter);
   }
 
   function clearText() {
     document.getElementById("inputText").value = "";
     document.getElementById("outputArea").innerText = "";
+    synth.cancel();
   }
 
   function toggleDarkMode() {
     document.body.classList.toggle("dark");
   }
 
-  // ⭐ NEW WORKING TRANSLATION FUNCTION
   function translateText() {
     const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter text first.");
 
     const targetLang = document.getElementById("languageSelect").value;
-
     const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`;
 
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        if (data?.responseData?.translatedText) {
+        if (data && data.responseData && data.responseData.translatedText) {
           document.getElementById("outputArea").innerText = data.responseData.translatedText;
         } else {
           document.getElementById("outputArea").innerText = "Translation failed.";
@@ -212,3 +254,5 @@
 
 </body>
 </html>
+
+
