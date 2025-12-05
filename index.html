@@ -1,198 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SaralSuno</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>SaralSuno</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<style>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
     body {
-        background: #0a0f2d;
-        font-family: Inter, sans-serif;
-        color: white;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1d4ed8 0, #020617 45%, #020617 100%);
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
 
-    .container {
-        width: 100%;
-        max-width: 900px;
-        margin-top: 40px;
-        padding: 20px;
+    .app {
+      width: 100%;
+      max-width: 960px;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 24px;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+      box-shadow: 0 28px 70px rgba(15, 23, 42, 0.9);
+      padding: 20px 22px 22px;
+      backdrop-filter: blur(30px);
     }
 
-    h1 {
-        text-align: center;
-        font-size: 28px;
-        margin-bottom: 20px;
-        color: #a8c0ff;
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 20% 20%, #a855f7, #2563eb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #f9fafb;
+      box-shadow: 0 0 22px rgba(168, 85, 247, 0.7);
+    }
+
+    .brand-main {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .badge {
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.2);
+      border: 1px solid rgba(129, 140, 248, 0.7);
+      font-size: 11px;
+      color: #c7d2fe;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .app {
+        padding: 16px;
+        border-radius: 18px;
+      }
+    }
+
+    .panel {
+      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.18), rgba(15, 23, 42, 0.98));
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .panel-title span {
+      font-size: 16px;
+    }
+
+    .panel-sub {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 6px;
     }
 
     textarea {
-        width: 100%;
-        height: 140px;
-        background: rgba(255,255,255,0.05);
-        outline: none;
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 10px;
-        padding: 12px;
-        font-size: 15px;
-        color: white;
+      width: 100%;
+      min-height: 130px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.75);
+      background: rgba(15, 23, 42, 0.98);
+      color: #f9fafb;
+      padding: 10px;
+      resize: none;
+      font-size: 13px;
+      outline: none;
+      transition: border 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     }
 
     textarea:focus {
-        border-color: #7b5cff;
-        box-shadow: 0 0 6px #7b5cff;
+      border-color: #a855f7;
+      box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.7);
+      background: #020617;
     }
 
-    .lang-row {
-        margin: 14px 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .muted {
+      font-size: 10px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0 4px;
+      flex-wrap: wrap;
+    }
+
+    .select-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .select-pill {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      padding: 4px 8px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #e5e7eb;
+    }
+
+    .select-pill small {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9ca3af;
     }
 
     select {
-        background: rgba(255,255,255,0.1);
-        border: none;
-        border-radius: 6px;
-        padding: 6px 10px;
-        color: white;
-        font-size: 14px;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: inherit;
+      font-size: 12px;
     }
 
     .switch-btn {
-        background: rgba(255,255,255,0.15);
-        border-radius: 8px;
-        padding: 6px 12px;
-        cursor: pointer;
-        font-size: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      background: rgba(15, 23, 42, 0.98);
+      padding: 4px 10px;
+      font-size: 15px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease, transform 0.08s ease;
     }
 
-    .btn {
-        width: 100%;
-        margin-top: 15px;
-        padding: 12px;
-        background: #6c47ff;
-        border-radius: 10px;
-        border: none;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.2s;
+    .switch-btn:hover {
+      background: rgba(148, 163, 184, 0.18);
+      transform: translateY(-1px);
     }
 
-    .btn:hover {
-        background: #8d6bff;
+    .primary-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
     }
 
-    .output-box {
-        margin-top: 20px;
-        white-space: pre-wrap;
-        background: rgba(255,255,255,0.07);
-        padding: 14px;
-        border-radius: 10px;
-        font-size: 15px;
-        min-height: 100px;
+    .btn-primary {
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      border-radius: 999px;
+      border: none;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #f9fafb;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 14px 30px rgba(79, 70, 229, 0.75);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
     }
 
-    .audio-row {
-        margin-top: 10px;
-        display: flex;
-        gap: 10px;
+    .btn-primary span {
+      font-size: 16px;
     }
 
-    .audio-btn {
-        background: rgba(255,255,255,0.18);
-        padding: 6px 14px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 18px 38px rgba(79, 70, 229, 0.9);
     }
-</style>
 
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      padding: 7px 14px;
+      font-size: 12px;
+      color: #e5e7eb;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-ghost span {
+      font-size: 14px;
+    }
+
+    .copy-note {
+      font-size: 10px;
+      color: #6b7280;
+      text-align: right;
+      margin-top: 4px;
+    }
+  </style>
 </head>
+
 <body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">Sa</div>
+        <div>
+          <div class="brand-main">SaralSuno</div>
+          <div class="brand-sub">Hear your words. Any language. Instantly.</div>
+        </div>
+      </div>
+      <div class="badge">⚡ Simple • Fast • Clean</div>
+    </header>
 
-<div class="container">
-    <h1>SaralSuno</h1>
-
-    <textarea id="inputText" placeholder="Type your text here..."></textarea>
-
-    <div class="lang-row">
-        <select id="fromLang">
+    <div class="controls-row">
+      <div class="select-group">
+        <div class="select-pill">
+          <small>From</small>
+          <select id="fromLang">
             <option value="en">English</option>
             <option value="hi">Hindi</option>
             <option value="ta">Tamil</option>
             <option value="te">Telugu</option>
             <option value="bn">Bengali</option>
-        </select>
+          </select>
+        </div>
 
-        <div class="switch-btn" id="switchBtn">↔️</div>
+        <button class="switch-btn" id="switchBtn" title="Swap languages">↔</button>
 
-        <select id="toLang">
+        <div class="select-pill">
+          <small>To</small>
+          <select id="toLang">
             <option value="hi">Hindi</option>
             <option value="en">English</option>
             <option value="ta">Tamil</option>
             <option value="te">Telugu</option>
             <option value="bn">Bengali</option>
-        </select>
+          </select>
+        </div>
+      </div>
     </div>
 
-    <button class="btn" id="translateBtn">Translate</button>
+    <div class="layout">
+      <!-- Input -->
+      <section class="panel">
+        <div class="panel-title"><span>✍️</span> Original</div>
+        <p class="panel-sub">Type or paste your text. Then translate & listen.</p>
+        <textarea id="inputText" placeholder="Type your text here..."></textarea>
+        <p class="muted">Tip: Works great for notes, captions, DMs, and school work.</p>
+      </section>
 
-    <div class="audio-row">
-        <div class="audio-btn" id="playOriginal">🔊 Hear Original</div>
-        <div class="audio-btn" id="playTranslation">🔊 Hear Translation</div>
+      <!-- Output -->
+      <section class="panel">
+        <div class="panel-title"><span>🔁</span> Translation</div>
+        <p class="panel-sub">Your translated text will appear here.</p>
+        <textarea id="outputText" placeholder="Translation will appear here..." readonly></textarea>
+        <p class="muted">You can copy, edit, or listen to this translation.</p>
+      </section>
     </div>
 
-    <div class="output-box" id="output">Your translation will appear here...</div>
+    <div class="primary-row">
+      <button class="btn-primary" id="translateBtn">
+        <span>✨</span> Translate with SaralSuno
+      </button>
 
-</div>
+      <button class="btn-ghost" id="hearOriginal">
+        <span>🔊</span> Hear Original
+      </button>
 
-<script>
-    const inputText = document.getElementById("inputText");
-    const output = document.getElementById("output");
+      <button class="btn-ghost" id="hearTranslation">
+        <span>🎧</span> Hear Translation
+      </button>
+
+      <button class="btn-ghost" id="copyTranslation">
+        <span>📋</span> Copy Translation
+      </button>
+    </div>
+
+    <p class="copy-note">
+      Note: Translation is demo text right now – plug in your SaralSuno backend where marked in the code.
+    </p>
+  </div>
+
+  <script>
     const fromLang = document.getElementById("fromLang");
     const toLang = document.getElementById("toLang");
     const switchBtn = document.getElementById("switchBtn");
-    const playOriginal = document.getElementById("playOriginal");
-    const playTranslation = document.getElementById("playTranslation");
+    const inputText = document.getElementById("inputText");
+    const outputText = document.getElementById("outputText");
+    const translateBtn = document.getElementById("translateBtn");
+    const hearOriginal = document.getElementById("hearOriginal");
+    const hearTranslation = document.getElementById("hearTranslation");
+    const copyTranslation = document.getElementById("copyTranslation");
 
     switchBtn.addEventListener("click", () => {
-        const temp = fromLang.value;
-        fromLang.value = toLang.value;
-        toLang.value = temp;
+      const prevFrom = fromLang.value;
+      fromLang.value = toLang.value;
+      toLang.value = prevFrom;
+
+      // optional: swap text too
+      const prevText = inputText.value;
+      inputText.value = outputText.value;
+      outputText.value = prevText;
     });
 
-    document.getElementById("translateBtn").addEventListener("click", () => {
-        const text = inputText.value.trim();
-        if (!text) {
-            output.textContent = "Please enter text.";
-            return;
-        }
-
-        // Placeholder translation until API connected
-        output.textContent = `[${fromLang.value.toUpperCase()} → ${toLang.value.toUpperCase()}]\n` + text;
-    });
-
-    function speak(text, lang) {
-        const msg = new SpeechSynthesisUtterance();
-        msg.text = text;
-        msg.lang = lang;
-        window.speechSynthesis.speak(msg);
+    // TODO: Replace this with real SaralSuno API call
+    function fakeTranslate(text, from, to) {
+      if (!text.trim()) return "";
+      let tag = `[${from.toUpperCase()} → ${to.toUpperCase()}] `;
+      if (from === to) tag = "";
+      return tag + text;
     }
 
-    playOriginal.addEventListener("click", () => {
-        speak(inputText.value, fromLang.value);
+    translateBtn.addEventListener("click", async () => {
+      const text = inputText.value.trim();
+      if (!text) {
+        outputText.value = "Please type something to translate.";
+        return;
+      }
+
+      // Call your real translation API here.
+      // const translated = await callSaralSuno(text, fromLang.value, toLang.value);
+      const translated = fakeTranslate(text, fromLang.value, toLang.value);
+      outputText.value = translated;
     });
 
-    playTranslation.addEventListener("click", () => {
-        speak(output.textContent, toLang.value);
-    });
-</script>
+    function speak(text, langCode) {
+      if (!text.trim()) return;
+      const msg = new SpeechSynthesisUtterance(text);
 
+      const map = {
+        en: "en-IN",
+        hi: "hi-IN",
+        ta: "ta-IN",
+        te: "te-IN",
+        bn: "bn-IN"
+      };
+
+      msg.lang = map[langCode] || "en-IN";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(msg);
+    }
+
+    hearOriginal.addEventListener("click", () => {
+      speak(inputText.value, fromLang.value);
+    });
+
+    hearTranslation.addEventListener("click", () => {
+      speak(outputText.value, toLang.value);
+    });
+
+    copyTranslation.addEventListener("click", async () => {
+      const text = outputText.value.trim();
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyTranslation.innerHTML = "<span>✅</span> Copied!";
+        setTimeout(() => {
+          copyTranslation.innerHTML = "<span>📋</span> Copy Translation";
+        }, 1200);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  </script>
 </body>
 </html>
