@@ -227,7 +227,6 @@
     <div class="buttons">
       <button onclick="translateText()">🌐 Translate</button>
 
-      <!-- UPDATED LANGUAGE LIST -->
       <select id="languageSelect">
         <option value="hi">Hindi</option>
         <option value="mr">Marathi</option>
@@ -252,18 +251,35 @@
     document.body.classList.toggle("dark");
   }
 
+  // Map translation language → TTS voice code
+  const langMap = {
+    hi: "hi-IN",
+    mr: "mr-IN",
+    ta: "ta-IN",
+    te: "te-IN",
+    bn: "bn-IN"
+  };
+
   function readInputText() {
     const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter text first.");
     synth.cancel();
-    synth.speak(new SpeechSynthesisUtterance(text));
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-IN"; // original is usually English
+    synth.speak(utter);
   }
 
   function readOutputText() {
     const text = document.getElementById("outputArea").innerText;
     if (!text) return alert("No translation yet.");
+
+    const lang = document.getElementById("languageSelect").value;
+
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = langMap[lang] || "en-IN";
+
     synth.cancel();
-    synth.speak(new SpeechSynthesisUtterance(text));
+    synth.speak(utter);
   }
 
   function clearText() {
@@ -298,4 +314,3 @@
 
 </body>
 </html>
-
