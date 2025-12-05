@@ -31,6 +31,7 @@
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Poppins", sans-serif;
+      font-size: 16px;
       background: radial-gradient(circle at top, rgba(124,58,237,0.18), transparent 55%),
                   radial-gradient(circle at bottom, rgba(37,99,235,0.22), transparent 55%),
                   var(--bg);
@@ -41,6 +42,10 @@
       justify-content: center;
       align-items: flex-start;
       transition: background 0.4s ease, color 0.3s ease;
+    }
+
+    body.elder {
+      font-size: 18px;
     }
 
     .nav {
@@ -80,6 +85,14 @@
       opacity: 0.7;
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
     .toggle-wrapper {
       display: flex;
       align-items: center;
@@ -109,6 +122,27 @@
       transform: translateX(20px);
     }
 
+    .ui-select {
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.9);
+      color: #e5e7eb;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .elder-btn {
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.95);
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
     .card {
       width: min(960px, 100%);
       background: rgba(255,255,255,0.96);
@@ -133,9 +167,13 @@
       border-radius: 1rem;
       border: 1px solid var(--border);
       background: rgba(15,23,42,0.015);
-      font-size: 0.98rem;
+      font-size: 1rem;
       line-height: 1.6;
       color: var(--text);
+    }
+    body.elder textarea,
+    body.elder .output {
+      font-size: 1.05rem;
     }
     textarea:focus, .output:focus {
       border-color: var(--accent);
@@ -144,7 +182,7 @@
     }
 
     .output { min-height: 130px; margin-top: 0.4rem; }
-    .section-label { color: var(--muted); margin-bottom: 0.4rem; }
+    .section-label { color: var(--muted); margin-bottom: 0.4rem; font-size: 0.85rem; }
 
     .buttons {
       display: flex; flex-wrap: wrap;
@@ -159,6 +197,11 @@
       border: none; color: white;
       font-weight: 600;
       cursor: pointer;
+      font-size: 0.9rem;
+    }
+    body.elder button {
+      padding: 0.85rem 1.6rem;
+      font-size: 1rem;
     }
     button.secondary {
       background: transparent;
@@ -196,36 +239,45 @@
       <div class="nav-title">
         <span class="nav-dot"></span><span>SaralSuno</span>
       </div>
-      <div class="nav-tagline">A tiny accessibility tool that actually helps.</div>
+      <div class="nav-tagline" id="navTagline">A tiny accessibility tool that actually helps.</div>
     </div>
 
-    <div class="toggle-wrapper">
-      <span class="toggle-label">Light</span>
-      <label class="switch">
-        <input type="checkbox" onclick="toggleTheme()">
-        <span class="slider"></span>
-      </label>
-      <span class="toggle-label">Dark</span>
+    <div class="nav-right">
+      <select id="uiLanguage" class="ui-select">
+        <option value="en">English UI</option>
+        <option value="hi">हिन्दी UI</option>
+      </select>
+
+      <button type="button" class="elder-btn" onclick="toggleElderMode()">A+</button>
+
+      <div class="toggle-wrapper">
+        <span class="toggle-label">Light</span>
+        <label class="switch">
+          <input type="checkbox" onclick="toggleTheme()">
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-label">Dark</span>
+      </div>
     </div>
   </nav>
 
   <main class="card">
     <header class="header">
-      <h1 class="header-title">Read. Translate. Listen.</h1>
-      <p class="header-sub">Paste text and translate it instantly.</p>
+      <h1 class="header-title" id="headerTitle">Read. Translate. Listen.</h1>
+      <p class="header-sub" id="headerSub">Paste text and translate it instantly.</p>
     </header>
 
-    <div class="section-label">Original text</div>
+    <div class="section-label" id="labelOriginal">Original text</div>
     <textarea id="inputText" placeholder="Paste your text here..."></textarea>
 
     <div class="buttons">
-      <button onclick="readInputText()">🔊 Speak Original</button>
-      <button onclick="readOutputText()">🔊 Speak Translation</button>
-      <button class="secondary" onclick="clearText()">🧹 Clear</button>
+      <button id="btnSpeakOriginal" onclick="readInputText()">🔊 Speak Original</button>
+      <button id="btnSpeakTranslation" onclick="readOutputText()">🔊 Speak Translation</button>
+      <button id="btnClear" class="secondary" onclick="clearText()">🧹 Clear</button>
     </div>
 
     <div class="buttons">
-      <button onclick="translateText()">🌐 Translate</button>
+      <button id="btnTranslate" onclick="translateText()">🌐 Translate</button>
 
       <select id="languageSelect">
         <option value="hi">Hindi</option>
@@ -236,25 +288,72 @@
       </select>
     </div>
 
-    <div class="section-label">Translation</div>
+    <div class="section-label" id="labelTranslation">Translation</div>
     <div id="outputArea" class="output" tabindex="0"></div>
 
     <footer>
-      Made with 💜 by <b>Anay Parameshwaran</b>
+      <span id="footerText">Made with 💜 by </span><b>Anay Parameshwaran</b>
     </footer>
   </main>
 
 <script>
   const synth = window.speechSynthesis;
-  let availableVoices = [];
 
-  // Load voices
-  function loadVoices() {
-    availableVoices = synth.getVoices();
+  function toggleTheme() {
+    document.body.classList.toggle("dark");
   }
-  loadVoices();
-  window.speechSynthesis.onvoiceschanged = loadVoices;
 
+  function toggleElderMode() {
+    document.body.classList.toggle("elder");
+  }
+
+  // UI language strings
+  const uiStrings = {
+    en: {
+      navTagline: "A tiny accessibility tool that actually helps.",
+      headerTitle: "Read. Translate. Listen.",
+      headerSub: "Paste text and translate it instantly.",
+      labelOriginal: "Original text",
+      labelTranslation: "Translation",
+      btnSpeakOriginal: "🔊 Speak Original",
+      btnSpeakTranslation: "🔊 Speak Translation",
+      btnClear: "🧹 Clear",
+      btnTranslate: "🌐 Translate",
+      footerText: "Made with 💜 by "
+    },
+    hi: {
+      navTagline: "एक छोटा सा मददगार औज़ार जो सच में काम आता है।",
+      headerTitle: "पढ़ो. अनुवाद करो. सुनो.",
+      headerSub: "अपना टेक्स्ट पेस्ट करें और तुरंत अनुवाद सुनें।",
+      labelOriginal: "मूल टेक्स्ट",
+      labelTranslation: "अनुवाद",
+      btnSpeakOriginal: "🔊 मूल टेक्स्ट सुनें",
+      btnSpeakTranslation: "🔊 अनुवाद सुनें",
+      btnClear: "🧹 साफ़ करें",
+      btnTranslate: "🌐 अनुवाद करो",
+      footerText: "प्यार से बनाया • "
+    }
+  };
+
+  function setUILanguage(lang) {
+    const strings = uiStrings[lang] || uiStrings.en;
+    document.getElementById("navTagline").textContent = strings.navTagline;
+    document.getElementById("headerTitle").textContent = strings.headerTitle;
+    document.getElementById("headerSub").textContent = strings.headerSub;
+    document.getElementById("labelOriginal").textContent = strings.labelOriginal;
+    document.getElementById("labelTranslation").textContent = strings.labelTranslation;
+    document.getElementById("btnSpeakOriginal").textContent = strings.btnSpeakOriginal;
+    document.getElementById("btnSpeakTranslation").textContent = strings.btnSpeakTranslation;
+    document.getElementById("btnClear").textContent = strings.btnClear;
+    document.getElementById("btnTranslate").textContent = strings.btnTranslate;
+    document.getElementById("footerText").textContent = strings.footerText;
+  }
+
+  document.getElementById("uiLanguage").addEventListener("change", (e) => {
+    setUILanguage(e.target.value);
+  });
+
+  // Map translation language → TTS voice code
   const langMap = {
     hi: "hi-IN",
     mr: "mr-IN",
@@ -263,25 +362,28 @@
     bn: "bn-IN"
   };
 
+  let availableVoices = [];
+
+  function loadVoices() {
+    availableVoices = synth.getVoices();
+  }
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+
   function voiceExists(langCode) {
     return availableVoices.some(v => v.lang === langCode);
   }
 
   function showVoiceError(langCode) {
-    alert(`❌ This device does not support text-to-speech for: ${langCode}\n\nTry using Chrome on mobile or a device with that language pack installed.`);
-  }
-
-  function toggleTheme() {
-    document.body.classList.toggle("dark");
+    alert(`❌ This device does not support text-to-speech for: ${langCode}\n\nTry using a device or browser with that language pack installed.`);
   }
 
   function readInputText() {
     const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter text first.");
-
     synth.cancel();
     const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "en-IN";
+    utter.lang = "en-IN"; // original usually English
     synth.speak(utter);
   }
 
@@ -292,7 +394,6 @@
     const targetLang = document.getElementById("languageSelect").value;
     const langCode = langMap[targetLang];
 
-    // Check if device supports this TTS voice
     if (!voiceExists(langCode)) {
       showVoiceError(langCode);
       return;
@@ -332,7 +433,10 @@
           "Error contacting translation service.";
       });
   }
+
+  // default UI language
+  setUILanguage("en");
 </script>
+
 </body>
 </html>
-
