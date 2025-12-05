@@ -2,313 +2,729 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SaralSuno – Accessibility Assistant</title>
-
+  <title>SaralSuno • Smart Translator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #6a11cb;
-      --bg2: #2575fc;
-      --card: #ffffff;
-      --text: #1f2937;
-      --border: #e5e7eb;
-      --muted: #6b7280;
-      --button: linear-gradient(135deg, #6a11cb, #2575fc);
-    }
-    body.dark {
-      --bg: #0f172a;
-      --bg2: #1e293b;
-      --card: #1e293b;
-      --text: #f3f4f6;
-      --border: #334155;
-      --muted: #94a3b8;
-      --button: linear-gradient(135deg, #4c1d95, #1d4ed8);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, var(--bg), var(--bg2));
       min-height: 100vh;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 45%, #020617 100%);
+      color: #e5e7eb;
       display: flex;
+      align-items: center;
       justify-content: center;
-      padding: 2rem;
-      color: var(--text);
-      transition: background 0.4s ease, color 0.3s ease;
+      padding: 24px;
     }
 
-    .container {
+    .app {
       width: 100%;
-      max-width: 760px;
-      background: var(--card);
-      padding: 2rem 1.8rem 2rem;
-      border-radius: 1.2rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+      max-width: 1080px;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.9);
+      padding: 24px 28px 28px;
+      backdrop-filter: blur(30px);
     }
 
-    h1 {
-      text-align: center;
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin-bottom: 0.35rem;
-    }
-
-    p.subtitle {
-      text-align: center;
-      margin-bottom: 1.6rem;
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    /* DARK MODE SWITCH */
-    .switch-wrapper {
+    .app-header {
       display: flex;
-      justify-content: flex-end;
-      margin-bottom: 1rem;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      align-items: center;
     }
 
-    .switch {
-      position: relative;
-      width: 50px;
-      height: 26px;
-    }
-
-    .switch input { 
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background: #cbd5e1;
-      border-radius: 34px;
-      transition: .3s;
-    }
-
-    .slider::before {
-      position: absolute;
-      content: "";
-      height: 20px;
-      width: 20px;
-      left: 3px;
-      bottom: 3px;
-      background: white;
-      border-radius: 50%;
-      transition: .3s;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    input:checked + .slider {
-      background: #4c1d95;
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(24px);
-    }
-
-    /* INPUT + OUTPUT */
-    textarea, .output {
-      width: 100%;
-      padding: 1rem;
-      border-radius: 1rem;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.6);
-      color: var(--text);
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      resize: vertical;
-    }
-
-    body.dark textarea,
-    body.dark .output {
-      background: rgba(30,41,59,0.8);
-    }
-
-    .label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-bottom: 0.25rem;
-      color: var(--muted);
-    }
-
-    .output {
-      min-height: 120px;
-    }
-
-    /* BUTTONS */
-    .buttons {
+    .brand {
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
+      align-items: center;
+      gap: 12px;
     }
 
-    button {
-      padding: 0.75rem 1.5rem;
+    .brand-icon {
+      width: 36px;
+      height: 36px;
       border-radius: 999px;
-      border: none;
-      background: var(--button);
-      color: white;
+      background: radial-gradient(circle at 20% 20%, #a855f7, #2563eb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #f9fafb;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+    }
+
+    .brand-text-main {
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: #c4b5fd;
+    }
+
+    .brand-text-sub {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(79, 70, 229, 0.2);
+      color: #c7d2fe;
+      font-size: 11px;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+    }
+
+    .badge span {
+      font-size: 13px;
+      margin-right: 4px;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .app-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .app {
+        padding: 18px 16px 22px;
+        border-radius: 18px;
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.25), rgba(15, 23, 42, 0.95));
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 16px 16px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -80px;
+      background: radial-gradient(circle at top, rgba(168, 85, 247, 0.12), transparent 60%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 15px;
       font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
-      transition: .2s ease;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(0,0,0,0.35);
+    .card-title span {
+      font-size: 18px;
     }
 
-    button.secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-      box-shadow: none;
+    .card-subtitle {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    textarea {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      padding: 10px 11px;
+      resize: none;
+      min-height: 120px;
+      font-size: 13px;
+      outline: none;
+      transition: border 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    textarea:focus {
+      border-color: #a855f7;
+      box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.7);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0 8px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .select-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .select {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      padding: 4px 10px;
+      font-size: 11px;
+      color: #e5e7eb;
     }
 
     select {
-      padding: 0.75rem 1.2rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.65);
-      color: var(--text);
-      font-size: 0.9rem;
+      background: transparent;
+      border: none;
+      color: inherit;
+      outline: none;
     }
 
-    footer {
-      text-align: center;
-      margin-top: 1.3rem;
-      font-size: 0.9rem;
-      opacity: 0.8;
+    .swap {
+      font-size: 13px;
+      border-radius: 999px;
+      padding: 3px 8px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      cursor: pointer;
+    }
+
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      border: none;
+      color: #f9fafb;
+      font-size: 13px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+    }
+
+    .btn-primary span {
+      font-size: 15px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 30px rgba(79, 70, 229, 0.75);
+      filter: brightness(1.06);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      color: #e5e7eb;
+      font-size: 12px;
+      padding: 5px 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.9;
+    }
+
+    .btn-secondary span {
+      font-size: 14px;
+    }
+
+    .output-box {
+      margin-top: 8px;
+      padding: 8px 9px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px dashed rgba(148, 163, 184, 0.8);
+      min-height: 80px;
+      font-size: 13px;
+      color: #e5e7eb;
+      white-space: pre-wrap;
+    }
+
+    .muted {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .sense-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr);
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .sense-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .sense-label {
+      min-width: 92px;
+      font-weight: 500;
+      color: #c4b5fd;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .sense-value {
+      color: #e5e7eb;
+    }
+
+    .tone-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    .tone-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      background: radial-gradient(circle at 30% 20%, rgba(248, 250, 252, 0.8), rgba(148, 163, 184, 0.1));
+      box-shadow: 0 0 12px rgba(148, 163, 184, 0.8);
+    }
+
+    .tone-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      font-size: 11px;
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.96);
+    }
+
+    .tiny {
+      font-size: 10px;
+      color: #6b7280;
+    }
+
+    .error {
+      font-size: 11px;
+      color: #fecaca;
+      margin-top: 4px;
     }
   </style>
 </head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">Sa</div>
+        <div>
+          <div class="brand-text-main">SaralSuno</div>
+          <div class="brand-text-sub">Translate • Understand • Rewrite</div>
+        </div>
+      </div>
+      <div class="badge"><span>⚡</span> SaralSense™ Beta</div>
+    </header>
 
-<body class="dark">
+    <div class="app-grid">
+      <!-- LEFT: Translator -->
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-title">
+              <span>🌐</span> Smart Translator
+            </div>
+          </div>
+          <p class="card-subtitle">
+            Paste any text. Choose languages. Translate with SaralSuno, then let SaralSense decode the real vibe.
+          </p>
 
-  <div class="container">
+          <div class="pill-row">
+            <div class="pill">English ⇄ Hindi</div>
+            <div class="pill">Emails</div>
+            <div class="pill">Assignments</div>
+            <div class="pill">Social posts</div>
+          </div>
 
-    <!-- DARK MODE SWITCH -->
-    <div class="switch-wrapper">
-      <label class="switch">
-        <input type="checkbox" id="themeToggle" onclick="toggleTheme()">
-        <span class="slider"></span>
-      </label>
+          <textarea id="inputText" placeholder="Type or paste your text here…"></textarea>
+          <div id="error" class="error" style="display:none;"></div>
+
+          <div class="controls-row">
+            <div class="select-group">
+              <div class="select">
+                <small>From</small>
+                <select id="fromLang">
+                  <option value="en">English</option>
+                  <option value="hi">Hindi</option>
+                  <option value="mr">Marathi</option>
+                  <option value="bn">Bengali</option>
+                  <option value="ta">Tamil</option>
+                </select>
+              </div>
+              <button class="swap" id="swapLang" title="Swap languages">⇄</button>
+              <div class="select">
+                <small>To</small>
+                <select id="toLang">
+                  <option value="hi">Hindi</option>
+                  <option value="en">English</option>
+                  <option value="mr">Marathi</option>
+                  <option value="bn">Bengali</option>
+                  <option value="ta">Tamil</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button class="btn-primary" id="translateBtn">
+              <span>✨</span> Translate with SaralSuno
+            </button>
+            <button class="btn-secondary" id="analyzeBtn">
+              <span>🧠</span> Analyze Meaning (SaralSense)
+            </button>
+          </div>
+
+          <p class="muted" style="margin-top:6px;">
+            Note: Translation is a demo. Plug your own AI/LLM API in the code where marked.
+          </p>
+
+          <div class="output-box" id="translationOutput">
+            <span class="tiny">Your translation will appear here.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: SaralSense -->
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-title">
+              <span>🧭</span> SaralSense™ – Smart Meaning Detector
+            </div>
+          </div>
+          <p class="card-subtitle">
+            Not just “what it says” – SaralSense shows what your text really feels like to a human reader.
+          </p>
+
+          <div class="pill-row">
+            <div class="pill">Tone detector</div>
+            <div class="pill">Soft vs. harsh</div>
+            <div class="pill">Hidden meaning</div>
+          </div>
+
+          <div class="sense-grid">
+            <div class="sense-row">
+              <div class="sense-label">Literal Meaning</div>
+              <div class="sense-value" id="literalMeaning">
+                <span class="tiny">Click “Analyze Meaning” to decode your text.</span>
+              </div>
+            </div>
+
+            <div class="sense-row">
+              <div class="sense-label">Intended Meaning</div>
+              <div class="sense-value" id="intendedMeaning"></div>
+            </div>
+
+            <div class="sense-row">
+              <div class="sense-label">Tone & Mood</div>
+              <div class="sense-value">
+                <div class="tone-bar">
+                  <div class="tone-dot" id="toneEmoji">😐</div>
+                  <div class="tone-pill" id="toneLabel">Neutral / mixed</div>
+                </div>
+                <p class="tiny" id="toneExtra" style="margin-top:4px;">
+                  SaralSense estimates if the text feels friendly, formal, harsh, or emotional.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions-row" style="margin-top:10px;">
+            <button class="btn-secondary" id="rewritePolite">
+              <span>🤝</span> Rewrite more polite
+            </button>
+            <button class="btn-secondary" id="rewriteConfident">
+              <span>🔥</span> Rewrite more confident
+            </button>
+            <button class="btn-secondary" id="rewriteCrisp">
+              <span>✂️</span> Short & crisp
+            </button>
+          </div>
+
+          <div class="output-box" id="rewriteOutput" style="margin-top:8px;">
+            <span class="tiny">Rewritten versions by SaralSense will appear here.</span>
+          </div>
+        </div>
+      </section>
     </div>
-
-    <h1>🌸 SaralSuno</h1>
-    <p class="subtitle">Translate • Listen • Understand — built for accessibility</p>
-
-    <div class="label">Original text</div>
-    <textarea id="inputText" placeholder="Paste your English text here..."></textarea>
-
-    <div class="buttons">
-      <button onclick="readInputText()">🔊 Speak Original</button>
-      <button onclick="readOutputText()">🔊 Speak Translation</button>
-      <button class="secondary" onclick="clearText()">🧹 Clear</button>
-    </div>
-
-    <div class="buttons">
-      <button onclick="translateText()">🌐 Translate</button>
-      <select id="languageSelect">
-        <option value="hi">Hindi</option>
-        <option value="mr">Marathi</option>
-      </select>
-    </div>
-
-    <div class="label">Translation</div>
-    <div class="output" id="outputArea"></div>
-
-    <footer>
-      Made with 💜 for accessibility · Built by <b>Anay Parameshwaran</b>
-    </footer>
   </div>
 
-<script>
-  const synth = window.speechSynthesis;
-  let voices = [];
+  <script>
+    const inputText = document.getElementById("inputText");
+    const errorEl = document.getElementById("error");
+    const translationOutput = document.getElementById("translationOutput");
+    const fromLang = document.getElementById("fromLang");
+    const toLang = document.getElementById("toLang");
+    const swapLang = document.getElementById("swapLang");
 
-  function loadVoices() { voices = synth.getVoices(); }
-  loadVoices();
-  speechSynthesis.onvoiceschanged = loadVoices;
+    const literalEl = document.getElementById("literalMeaning");
+    const intendedEl = document.getElementById("intendedMeaning");
+    const toneEmoji = document.getElementById("toneEmoji");
+    const toneLabel = document.getElementById("toneLabel");
+    const toneExtra = document.getElementById("toneExtra");
+    const rewriteOutput = document.getElementById("rewriteOutput");
 
-  function toggleTheme() {
-    document.body.classList.toggle("dark");
-  }
+    const translateBtn = document.getElementById("translateBtn");
+    const analyzeBtn = document.getElementById("analyzeBtn");
+    const rewritePolite = document.getElementById("rewritePolite");
+    const rewriteConfident = document.getElementById("rewriteConfident");
+    const rewriteCrisp = document.getElementById("rewriteCrisp");
 
-  function getVoice(langCode) {
-    if (!voices.length) return null;
-    langCode = langCode.toLowerCase();
-    return voices.find(v => v.lang.toLowerCase().startsWith(langCode))
-        || voices.find(v => v.lang.toLowerCase().includes(langCode))
-        || null;
-  }
+    swapLang.addEventListener("click", () => {
+      const fromValue = fromLang.value;
+      fromLang.value = toLang.value;
+      toLang.value = fromValue;
+    });
 
-  function readInputText() {
-    const text = inputText.value.trim();
-    if (!text) return alert("Enter some text first.");
-
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "en-IN";
-    utter.voice = getVoice("en") || null;
-
-    synth.cancel();
-    synth.speak(utter);
-  }
-
-  function readOutputText() {
-    const text = outputArea.innerText.trim();
-    if (!text) return alert("No translated text to speak.");
-
-    const lang = languageSelect.value;
-    const utter = new SpeechSynthesisUtterance(text);
-
-    if (lang === "hi") utter.lang = "hi-IN";
-    if (lang === "mr") utter.lang = "mr-IN";
-
-    let voice = getVoice(lang);
-    if (!voice) {
-      alert("Device does not have Hindi/Marathi TTS installed. Using English fallback.");
-      voice = getVoice("en");
+    function requireText() {
+      const text = inputText.value.trim();
+      if (!text) {
+        errorEl.style.display = "block";
+        errorEl.textContent = "Please enter some text first.";
+        return null;
+      }
+      errorEl.style.display = "none";
+      return text;
     }
-    utter.voice = voice;
 
-    synth.cancel();
-    synth.speak(utter);
-  }
+    // --- SIMPLE DEMO TRANSLATOR ---
+    function fakeTranslate(text, from, to) {
+      // TODO: Replace this with your real API call.
+      // This is just a playful placeholder so the UI feels alive.
+      let tag = `[${from.toUpperCase()} → ${to.toUpperCase()}]`;
+      if (from === to) tag = "[Same language]";
+      return `${tag} ${text}`;
+    }
 
-  function clearText() {
-    inputText.value = "";
-    outputArea.innerText = "";
-    synth.cancel();
-  }
+    translateBtn.addEventListener("click", () => {
+      const text = requireText();
+      if (!text) return;
+      const translated = fakeTranslate(text, fromLang.value, toLang.value);
+      translationOutput.textContent = translated;
+    });
 
-  function translateText() {
-    const text = inputText.value.trim();
-    if (!text) return alert("Enter text first.");
+    // --- SARALSENSE: TONE & MEANING ---
+    function analyzeTone(text) {
+      const lower = text.toLowerCase();
 
-    const lang = languageSelect.value;
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${lang}`;
+      const positiveWords = ["great", "good", "love", "amazing", "nice", "happy", "excited", "fantastic", "wonderful", "thanks", "thank you", "appreciate"];
+      const negativeWords = ["bad", "hate", "stupid", "annoying", "angry", "upset", "disappointed", "terrible", "worst", "idiot", "useless"];
+      const formalWords = ["regarding", "therefore", "sincerely", "request", "kindly", "apologize", "furthermore", "hence", "clarify"];
+      const casualWords = ["bro", "dude", "lol", "omg", "btw", "yaar", "bruh"];
+      const harshPhrases = ["you should have", "why didn't you", "this is your fault", "what were you thinking"];
+      const softening = ["maybe", "a bit", "slightly", "i guess", "i think", "could be", "perhaps"];
 
-    fetch(url)
-      .then(r => r.json())
-      .then(data => {
-        let translated = data?.responseData?.translatedText;
-        if (!translated && data.matches?.length) translated = data.matches[0].translation;
+      let score = 0;
+      let formality = 0;
+      let harsh = 0;
+      let casual = 0;
+      let softened = 0;
 
-        outputArea.innerText = translated || "Translation failed.";
-      })
-      .catch(() => outputArea.innerText = "Error connecting to translation service.");
-  }
-</script>
+      positiveWords.forEach(w => { if (lower.includes(w)) score += 1; });
+      negativeWords.forEach(w => { if (lower.includes(w)) score -= 1; });
+      formalWords.forEach(w => { if (lower.includes(w)) formality += 1; });
+      casualWords.forEach(w => { if (lower.includes(w)) casual += 1; });
+      harshPhrases.forEach(w => { if (lower.includes(w)) harsh += 2; });
+      softening.forEach(w => { if (lower.includes(w)) softened += 1; });
 
+      // Emojis & tone
+      let emoji = "😐";
+      let label = "Neutral / mixed";
+      let explanation = "The message feels fairly neutral with a balanced tone.";
+
+      if (score >= 2 && harsh === 0) {
+        emoji = "😊";
+        label = "Friendly / positive";
+        explanation = "The text comes across as warm and appreciative.";
+      } else if (score <= -2 || harsh >= 2) {
+        emoji = "😠";
+        label = "Critical / harsh";
+        explanation = "The message may feel sharp or critical to the reader.";
+      } else if (score < 0) {
+        emoji = "😕";
+        label = "Slightly negative";
+        explanation = "The text hints at dissatisfaction or criticism.";
+      } else if (score > 0) {
+        emoji = "🙂";
+        label = "Slightly positive";
+        explanation = "The text leans positive but stays somewhat neutral.";
+      }
+
+      // Formal vs casual overlay
+      if (formality > 1 && casual === 0) {
+        label += " • Formal";
+        explanation += " The language is more formal and suitable for work/college context.";
+      } else if (casual > 0 && formality === 0) {
+        label += " • Casual";
+        explanation += " The language feels casual and conversational.";
+      }
+
+      // Softened criticism
+      if (harsh > 0 && softened > 0) {
+        explanation += " However, there are softening words that make the criticism sound gentler.";
+      }
+
+      return { emoji, label, explanation };
+    }
+
+    function buildLiteralMeaning(text) {
+      const trimmed = text.trim();
+      if (trimmed.length <= 220) return trimmed;
+      return trimmed.slice(0, 220) + "…";
+    }
+
+    function buildIntendedMeaning(text, tone) {
+      const lower = text.toLowerCase();
+      const isQuestion = text.trim().endsWith("?");
+      const mentionsPlan = lower.includes("plan") || lower.includes("idea");
+      const mentionsWork = lower.includes("assignment") || lower.includes("project") || lower.includes("work");
+
+      let core = "The writer is sharing an opinion or feedback.";
+
+      if (mentionsPlan) {
+        core = "The writer is reacting to someone's plan or idea.";
+      } else if (mentionsWork) {
+        core = "The writer is talking about some task, project, or work.";
+      } else if (isQuestion) {
+        core = "The writer is asking for clarity, help, or a decision.";
+      }
+
+      if (tone.label.includes("Critical") || tone.label.includes("negative")) {
+        core += " The message mainly points out problems or areas for improvement.";
+      } else if (tone.label.includes("Positive")) {
+        core += " The message expresses appreciation or support.";
+      } else if (tone.label.includes("Neutral")) {
+        core += " The message tries to stay neutral and factual.";
+      }
+
+      return core + " Overall, SaralSense reads this as: " + tone.label + ".";
+    }
+
+    analyzeBtn.addEventListener("click", () => {
+      const text = requireText();
+      if (!text) return;
+
+      const tone = analyzeTone(text);
+      toneEmoji.textContent = tone.emoji;
+      toneLabel.textContent = tone.label;
+      toneExtra.textContent = tone.explanation;
+
+      literalEl.textContent = buildLiteralMeaning(text);
+      intendedEl.textContent = buildIntendedMeaning(text, tone);
+
+      rewriteOutput.innerHTML = '<span class="tiny">Pick a rewrite style above to see a transformed version.</span>';
+    });
+
+    // --- REWRITES ---
+    function rewrite(text, mode) {
+      const trimmed = text.trim();
+      if (!trimmed) return "";
+
+      if (mode === "polite") {
+        return (
+          "Polite version:\n\n" +
+          "I appreciate your effort on this. I feel that a few changes could make it even better. " +
+          "Could we please look at it together and refine some parts?"
+        );
+      }
+
+      if (mode === "confident") {
+        return (
+          "More confident version:\n\n" +
+          "Here’s what I think will work best. Let’s improve a few key points and move ahead with this plan. " +
+          "I’m sure these changes will give us a stronger result."
+        );
+      }
+
+      if (mode === "crisp") {
+        const short = trimmed.length > 140 ? trimmed.slice(0, 140) + "…" : trimmed;
+        return "Short & crisp version:\n\n" + short;
+      }
+
+      return trimmed;
+    }
+
+    rewritePolite.addEventListener("click", () => {
+      const text = requireText();
+      if (!text) return;
+      rewriteOutput.textContent = rewrite(text, "polite");
+    });
+
+    rewriteConfident.addEventListener("click", () => {
+      const text = requireText();
+      if (!text) return;
+      rewriteOutput.textContent = rewrite(text, "confident");
+    });
+
+    rewriteCrisp.addEventListener("click", () => {
+      const text = requireText();
+      if (!text) return;
+      rewriteOutput.textContent = rewrite(text, "crisp");
+    });
+  </script>
 </body>
 </html>
