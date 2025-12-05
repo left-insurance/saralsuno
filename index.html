@@ -246,12 +246,15 @@
 
 <script>
   const synth = window.speechSynthesis;
+  let availableVoices = [];
 
-  function toggleTheme() {
-    document.body.classList.toggle("dark");
+  // Load voices
+  function loadVoices() {
+    availableVoices = synth.getVoices();
   }
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
 
-  // Map translation language → TTS voice code
   const langMap = {
     hi: "hi-IN",
     mr: "mr-IN",
@@ -260,12 +263,25 @@
     bn: "bn-IN"
   };
 
+  function voiceExists(langCode) {
+    return availableVoices.some(v => v.lang === langCode);
+  }
+
+  function showVoiceError(langCode) {
+    alert(`❌ This device does not support text-to-speech for: ${langCode}\n\nTry using Chrome on mobile or a device with that language pack installed.`);
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle("dark");
+  }
+
   function readInputText() {
     const text = document.getElementById("inputText").value;
     if (!text) return alert("Enter text first.");
+
     synth.cancel();
     const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "en-IN"; // original is usually English
+    utter.lang = "en-IN";
     synth.speak(utter);
   }
 
@@ -273,12 +289,18 @@
     const text = document.getElementById("outputArea").innerText;
     if (!text) return alert("No translation yet.");
 
-    const lang = document.getElementById("languageSelect").value;
+    const targetLang = document.getElementById("languageSelect").value;
+    const langCode = langMap[targetLang];
 
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = langMap[lang] || "en-IN";
+    // Check if device supports this TTS voice
+    if (!voiceExists(langCode)) {
+      showVoiceError(langCode);
+      return;
+    }
 
     synth.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = langCode;
     synth.speak(utter);
   }
 
@@ -311,6 +333,6 @@
       });
   }
 </script>
-
 </body>
 </html>
+
